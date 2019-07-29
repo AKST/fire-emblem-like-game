@@ -1,14 +1,12 @@
+import { repeat } from 'base/array/array';
 import {
   render,
   createRenderInto,
   createStyleEngine,
-} from './lib/render.mjs';
+  VirtualNode,
+} from 'render/core';
 
-function repeat(n, fn) {
-  return Array.from({ length: n }, (_, index) => fn(index));
-}
-
-function Container({ grid }) {
+function Container({ grid }: { grid: VirtualNode }) {
   return (
     render('div', {
       style: {
@@ -23,14 +21,14 @@ function Container({ grid }) {
   );
 }
 
-function GridSlot({ className }) {
+function GridSlot({ className }: { className: string }): VirtualNode {
   console.log(className);
   return render('div', {
     attributes: { className },
   })
 }
 
-function Grid({ width, height }, lib) {
+function Grid({ width, height }: { width: number, height: number }, lib: any) {
   const n = width * height;
   const whRatio = width / height;
   const [wUnits, hUnits] = width > height
@@ -68,7 +66,8 @@ function Grid({ width, height }, lib) {
 
 window.addEventListener('DOMContentLoaded', () => {
   try {
-    const createElementImpl = el => document.createElement(el);
+    const createElementImpl = (el: string) => document.createElement(el);
+    const createTextImpl = (el: string) => document.createTextNode(el);
 
     const [
       styleSheetElement,
@@ -77,7 +76,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const renderInto = createRenderInto(
         createElementImpl,
-        el => document.createTextNode(el),
+        createTextImpl,
         getClassName,
     );
 
