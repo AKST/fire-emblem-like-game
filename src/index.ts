@@ -22,7 +22,6 @@ function Container({ grid }: { grid: VirtualNode }) {
 }
 
 function GridSlot({ className }: { className: string }): VirtualNode {
-  console.log(className);
   return render('div', {
     attributes: { className },
   })
